@@ -1,50 +1,54 @@
-# Welcome to your Expo app 👋
+## Pré-requisitos
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Antes de começar, você precisará ter o seguinte instalado em seu computador:
 
-## Get started
+- [Node.js](https://nodejs.org/) (versão 18 ou superior)
+- [Expo CLI](https://docs.expo.dev/get-started/installation/) (instale com `npm install -g expo-cli`)
 
-1. Install dependencies
+## Instalação do Node.js
 
-   ```bash
-   npm install
-   ```
+1. Acesse o site oficial do [Node.js](https://nodejs.org/).
+2. Baixe e instale a versão LTS (Long Term Support) recomendada para o seu sistema operacional.
 
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Instalação do Expo CLI
+Abra o terminal e execute o seguinte comando para instalar o Expo CLI globalmente:
 
 ```bash
-npm run reset-project
+npm install -g expo-cli
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Execução do projeto
+1.Instale as dependências do projeto:
 
-## Learn more
+```bash
+npm install
+```
+2.Inicie o servidor de desenvolvimento:
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+expo start
+```
+3. Para dispositivos Android, abra aplicativo Expo Go no seu dispositivo móvel e escaneie o código QR que aparece no terminal ou no navegador.
+4. Para dispositivos iOS, abra aplicativo de câmera do dispositivo e escaneie o código QR que aparece no terminal ou no navegador.
+   
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Configuração do ambiente Android/iOS
+Android
+Android Studio: Instale o Android Studio para configurar um emulador Android.
 
-## Join the community
+#### Configuração do Emulador: Siga as instruções no Android Studio para criar um novo dispositivo virtual.
 
-Join our community of developers creating universal apps.
+Execução no Emulador: Com o servidor em execução, use:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npm run android
+```
+
+iOS (macOS apenas)
+Xcode: Instale o Xcode na App Store.
+
+Execução no Simulador: Com o servidor em execução, use:
+
+```bash
+npm run ios
+```
