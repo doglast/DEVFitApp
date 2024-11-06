@@ -26,5 +26,15 @@ export default{
   primary:'#E8B20E',
   gray:'#8F8E8F',
   white:'#FFF',
-  black:'#000'
+  shadow:'#4b45457d',
+  
+  black:'#000',
+  graphite:'#41424C',
+  darkGray:'#686868',
+  silver:'#c0c0c0',
+  blue:'#0d6efd',
+  darkBlue:'#0847A5',
+  gold:'#ffc107',
+  darkYellow:'#A87F05'
+
 };
