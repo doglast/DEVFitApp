@@ -23,18 +23,25 @@ export default{
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
   },
-  primary:'#E8B20E',
+
+  /* paleta geral */
+  primary:'#6973FA',
   gray:'#8F8E8F',
   white:'#FFF',
   shadow:'#4b45457d',
-  
   black:'#000',
+
+  /* cards informativos da dashboard */
   graphite:'#41424C',
   darkGray:'#686868',
   silver:'#c0c0c0',
   blue:'#0d6efd',
   darkBlue:'#0847A5',
   gold:'#ffc107',
-  darkYellow:'#A87F05'
+  darkYellow:'#A87F05',
 
+  /* cards informativos do usuário */
+  warning:'#ffc107',
+  cash:	'#339900',
+  data:'#0dcaf0'
 };
