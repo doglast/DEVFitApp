@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import { windowHeight, windowWidth } from '../utils/Dimensions';
-import Colors from './../constants/Colors';
+import { windowHeight, windowWidth } from '../../utils/Dimensions';
+import Colors from '../../constants/Colors';
 
 const CarouselItem = ({item}) =>{
   return(

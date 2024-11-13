@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, FlatList, Animated } from 'react-native';
-import { windowWidth } from '../utils/Dimensions';
+import { windowWidth } from '../../utils/Dimensions';
 import CarouselItem from './CarouselItem';
 
 

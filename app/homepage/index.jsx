@@ -1,8 +1,8 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import Colors from '../../constants/Colors';
-import Carousel from '../../components/Carousel';
-import CardList from '../../components/CardList';
+import Carousel from '../../components/home/Carousel';
+import CardList from '../../components/home/CardList';
 import { dummyCarouselData } from '../../data/CarouselData';
 import { dummyCardData } from '../../data/CardData';
 
