@@ -43,5 +43,10 @@ export default{
   /* cards informativos do usuário */
   warning:'#ffc107',
   cash:	'#339900',
-  data:'#0dcaf0'
+  data:'#0dcaf0',
+  danger:'#dc3545',
+
+  greenBg:'#87D37F',
+  yellowBg:'#FFE196',
+  primaryBg:'#DFDDFF'
 };

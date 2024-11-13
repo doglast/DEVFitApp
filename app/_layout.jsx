@@ -26,6 +26,11 @@ export default function RootLayout() {
           headerShown:false
         }}
       />
+      <Stack.Screen name="member/index" // Use a dynamic segment for the member id
+        options={{
+          title: 'Usuário', // Título customizado
+        }}
+      />
     </Stack>
   );
 }
