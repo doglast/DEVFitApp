@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
   textSign: {
     fontFamily:'outfit-bold',
     fontSize:22,
-    textAlign:'center'
+    textAlign:'center',
+    color: '#ffffff'
   },
   link:{
     width:'100%'

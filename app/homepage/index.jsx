@@ -10,7 +10,7 @@ const HomepageScreen = () => {
   return (
     <ScrollView
       style={{
-        backgroundColor:Colors.white,
+        backgroundColor: Colors.primaryBg,
         height:'100%'
       }}
     >
