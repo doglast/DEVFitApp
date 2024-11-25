@@ -26,9 +26,19 @@ export default function RootLayout() {
           headerShown:false
         }}
       />
-      <Stack.Screen name="member/index" // Use a dynamic segment for the member id
+      <Stack.Screen name="member/index"
         options={{
-          title: 'Usuário', // Título customizado
+          headerShown:false
+        }}
+      />
+      <Stack.Screen name="payment/create"
+        options={{
+          headerShown:false
+        }}
+      />
+      <Stack.Screen name="payment/edit"
+        options={{
+          headerShown:false
         }}
       />
     </Stack>

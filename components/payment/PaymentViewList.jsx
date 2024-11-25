@@ -3,6 +3,7 @@ import { View, FlatList, StyleSheet, Text, Image } from "react-native";
 import PaymentViewItem from "./PaymentViewItem";
 import Colors from './../../constants/Colors';
 import { windowHeight } from './../../utils/Dimensions';
+import { Link } from "expo-router";
 
 const PaymentViewList = ({ data }) => {
   if (data && data.length) {
@@ -14,8 +15,14 @@ const PaymentViewList = ({ data }) => {
             <Image
               source={require('./../../assets/icons/cash_icon.png')}
               resizeMode="cover"
-              style={styles.postButtonIcon}
+              style={styles.headerIcon}
+            />
+            <Link style={styles.newItemIcon} href={'/payment/create'}>
+              <Image
+              source={require('./../../assets/icons/add_icon.png')}
+              resizeMode="cover"
               />
+            </Link>
           </View>
           <FlatList
             data={data}
@@ -54,7 +61,7 @@ const styles = StyleSheet.create({
   sectionHeader:{
     flexDirection:'row',
   },
-  postButtonIcon: {
+  headerIcon: {
     width:45,
     height: 45
   },
@@ -64,5 +71,11 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     marginHorizontal:10,
     fontFamily: 'outfit-bold',
-  }
+  },
+  newItemIcon: {
+    width:35,
+    height: 35,
+    marginLeft: '45%',
+    marginTop:'1.6%'
+  },
 });
