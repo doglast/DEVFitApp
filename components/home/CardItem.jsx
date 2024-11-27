@@ -9,8 +9,6 @@ const CardItem = ({ item }) => {
     return <Text>Loading...</Text>;
   }
 
-  console.log("Rendering item with id:", item.id);
-
   return (
     <View style={styles.feedItemContainer}>
       <Link href={'/member'}>
