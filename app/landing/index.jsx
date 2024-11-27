@@ -1,26 +1,32 @@
-import { Link } from "expo-router";
 import { Text, View, Image, Pressable, StyleSheet } from "react-native";
-import Colors from './../constants/Colors'
+import Colors from '../../constants/Colors'
+import { useNavigation } from '@react-navigation/native';
 
-export default function Index() {
+const LandingScreen = () => {
+  const navigation = useNavigation();
+
+  const handleNavigate = () =>{
+    navigation.navigate('Login')
+  }
+
   return (
     <View style={styles.container}>
-      <Image source={require('./../assets/images/banner.png')}
+      <Image source={require('./../../assets/images/banner.png')}
         style={styles.banner}
       />
       <View style={styles.page}>
         <Text style={styles.textTitle}>
           Gerencie o fluxo de pagamento dos seus alunos de qualquer lugar!
         </Text>        
-        <Pressable style={styles.pressable}>
-          <Link style={styles.link} href={'/login'}>
+        <Pressable style={styles.pressable} onPress={handleNavigate}>
             <Text style={styles.textSign}>Avançar</Text>
-          </Link>
         </Pressable>
       </View>
     </View>
   )
 }
+
+export default LandingScreen;
 
 const styles = StyleSheet.create({
   container: {
