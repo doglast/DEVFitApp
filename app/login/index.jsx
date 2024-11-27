@@ -27,7 +27,6 @@ const LoginScreen = () => {
       if (response.ok) {
         const data = await response.json();
         const token = data.token;
-        console.log('Login successful:', token);
         await AsyncStorage.setItem('userToken', token);
 
         // Navigate to the homepage

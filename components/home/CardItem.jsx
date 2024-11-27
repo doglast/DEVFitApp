@@ -1,17 +1,23 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { windowHeight, windowWidth } from '../../utils/Dimensions';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { windowWidth, windowHeight } from '../../utils/Dimensions';
 import Colors from '../../constants/Colors';
-import { Link } from "expo-router";
 
 const CardItem = ({ item }) => {
+  const navigation = useNavigation();
+
   if (!item) {
     return <Text>Loading...</Text>;
   }
 
+  const handlePress = () => {
+    navigation.navigate('Member', { memberId: item.id });
+  };
+
   return (
     <View style={styles.feedItemContainer}>
-      <Link href={'/member'}>
+      <TouchableOpacity onPress={handlePress}>
         <View style={styles.feedItem}>
           <View style={styles.textContainer}>
             <Text style={styles.valueText}>{item.name}</Text>
@@ -19,8 +25,8 @@ const CardItem = ({ item }) => {
             <Text style={styles.titleText}>E-mail: {item.email} </Text>
             <Text style={styles.titleText}>Telefone: {item.phone} </Text>
           </View>
-        </View>      
-      </Link>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
