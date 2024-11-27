@@ -2,8 +2,16 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { windowHeight, windowWidth } from '../../utils/Dimensions';
 import Colors from '../../constants/Colors';
-
 const MemberViewItem = ({ item }) => {
+
+  function formatDate(isoDateString) {
+    const date = new Date(isoDateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+
   return (
     <View style={styles.feedItemContainer}>
       <View style={styles.feedItem}>
@@ -17,7 +25,7 @@ const MemberViewItem = ({ item }) => {
           </Text>
           <Text style={styles.titleText}>Gênero: {item.gender}</Text>
           <Text style={styles.titleText}>
-            Data de Criação: {item.created_at}
+            Data de Criação: {formatDate(item.created_at)}
           </Text>
         </View>
       </View>
@@ -36,7 +44,7 @@ const styles = StyleSheet.create({
     borderRadius: windowHeight * 0.02,
     backgroundColor: Colors.white,
     borderColor: Colors.black,
-    borderWidth: '1%'
+    borderWidth: 1
   },
   titleText: {
     fontSize: 15,
