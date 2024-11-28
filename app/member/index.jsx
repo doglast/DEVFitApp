@@ -3,23 +3,24 @@ import {
   ScrollView, 
   Text, View,
   StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+  import { useNavigation } from '@react-navigation/native';
+  import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../../constants/Colors';
+import { windowHeight, windowWidth } from '@/utils/Dimensions';
+import MemberViewItem from '@/components/member/MemberViewItem';
 import PaymentViewList from '../../components/payment/PaymentViewList';
 import PlanViewList from '../../components/plan/PlanViewList';
-import { dummyPaymentData } from '../../data/PaymentData';
-import { dummyPlanData } from '../../data/PlanData';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import MemberViewItem from '@/components/member/MemberViewItem';
-import { windowHeight, windowWidth } from '@/utils/Dimensions';
 
 const MemberScreen = ({ route }) => {
   const { memberId } = route.params;
   const [memberData, setMemberData] = useState(null);
+  const [paymentData, setPaymentData] = useState(null); 
+  const [planData, setPlanData] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
   useEffect(() => {
+
     const fetchMemberData = async () => {
       try {
         const token = await AsyncStorage.getItem('userToken');
@@ -27,35 +28,95 @@ const MemberScreen = ({ route }) => {
           console.error('Nenhum token foi encontrado');
           return;
         }
-  
-        const response = await fetch(`https://www.rodrigozambon.com.br/devfitness/api/members/${memberId}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
+
+        const memberResponse = 
+          await fetch(`https://www.rodrigozambon.com.br/devfitness/api/members/${memberId}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
         });
-  
-        if (response.ok) {
-          const data = await response.json();
-          console.log('API Response:', data); // Log the entire response
-          setMemberData(data.member); // Adjust this line if the structure is different
+
+        if (memberResponse.ok) {
+          const memberData = await memberResponse.json();
+          setMemberData(memberData.member);
         } else {
-          console.error('Falha ao recuperar os dados do membro:', response.status);
+          console.error('Falha ao recuperar os dados do membro:', memberResponse.status);
         }
       } catch (error) {
-        console.error('Erro ao consultar os dados do membro:', error);
+        console.error('Erro ao consultar os dados:', error);
       } finally {
         setLoading(false);
       }
     };
-  
+
+    const fetchPaymentData = async () => {
+      try {
+        
+        const token = await AsyncStorage.getItem('userToken');
+        if (!token) {
+          console.error('Nenhum token foi encontrado');
+          return;
+        }
+
+        const paymentResponse = 
+          await fetch(`https://www.rodrigozambon.com.br/devfitness/api/payments/${memberId}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+        });
+
+        if (paymentResponse.ok) {
+          const paymentData = await paymentResponse.json();
+          setPaymentData(paymentData);
+        } else {
+          console.error('Falha ao recuperar os dados de pagamento:', paymentResponse.status);
+        }
+      } catch (error) {
+        console.error('Erro ao consultar os dados:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchPlanData = async () => {
+      try {
+        
+        const token = await AsyncStorage.getItem('userToken');
+        if (!token) {
+          console.error('Nenhum token foi encontrado');
+          return;
+        }
+
+        const planResponse = 
+          await fetch(`https://www.rodrigozambon.com.br/devfitness/api/plans/${memberId}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+        });
+
+        if (planResponse.ok) {
+          const planData = await planResponse.json();
+          setPlanData(planData);
+        } else {
+          console.error('Falha ao recuperar os dados dos planos:', planResponse.status);
+        }
+      } catch (error) {
+        console.error('Erro ao consultar os dados:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchMemberData();
+    fetchPaymentData();
+    fetchPlanData();
   }, [memberId]);
-  
-  useEffect(() => {
-    console.log('Updated memberData:', memberData);
-  }, [memberData]);
 
   if (loading) {
     return (
@@ -77,10 +138,9 @@ const MemberScreen = ({ route }) => {
         <Text style={styles.headerText}>{memberData.name}</Text>
       </View>
 
-      {console.log('antes de chamar', memberData)}
       <MemberViewItem item={memberData} />
-      <PaymentViewList data={dummyPaymentData} />
-      <PlanViewList data={dummyPlanData} />
+      <PaymentViewList data={paymentData} /> 
+      <PlanViewList data={planData} />
     </ScrollView>
   );
 };

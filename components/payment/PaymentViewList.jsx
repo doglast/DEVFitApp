@@ -51,9 +51,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 15,
     borderRadius: windowHeight * 0.02,
-    backgroundColor: Colors.greenBg,
+    backgroundColor: Colors.white,
     borderColor: Colors.black,
-    borderWidth: '1%'
+    borderWidth: 1
   },
   feedContentContainer: {
     paddingBottom: 5,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 16,
-    color: Colors.white,
+    color: Colors.greenBg,
     paddingTop: 12,
     marginHorizontal:10,
     fontFamily: 'outfit-bold',

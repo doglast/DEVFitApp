@@ -2,8 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { windowHeight, windowWidth } from './../../utils/Dimensions';
 import Colors from './../../constants/Colors';
-import { Link } from "expo-router";
-
 const PaymentViewItem = ({ item }) => {
   return(            
     <View style={styles.feedItemContainer}>
@@ -20,44 +18,23 @@ const PaymentViewItem = ({ item }) => {
           >
             {item.status === "1" ? ' Pago' : ' Pendente'}
           </Text>
+          <View style={styles.feedItemFooter}>
+            <TouchableOpacity style={styles.footerItem}>
+              <Image
+                source={require('./../../assets/icons/edit_icon.png')}
+                resizeMode="cover"
+                style={styles.postButtonIcon}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.footerItem}>
+              <Image
+                source={require('./../../assets/icons/delete_icon.png')}
+                resizeMode="cover"
+                style={styles.postButtonIcon}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.feedItemFooter}>
-        {/* Botão tela de Membro */}
-        <TouchableOpacity
-          style={[
-            styles.footerItem,
-            {
-              backgroundColor: Colors.gold,
-              borderBottomLeftRadius: windowHeight * 0.02,
-            },
-          ]}
-        >
-          <Link style={styles.link} href={'/payment/edit'}>
-            <Image
-              source={require('./../../assets/icons/edit_icon.png')}
-              resizeMode="cover"
-              style={styles.postButtonIcon}
-            />
-          </Link>
-        </TouchableOpacity>
-
-        {/* Botão tela de Pagamentos */}
-        <TouchableOpacity
-          style={[
-            styles.footerItem,
-            {
-              backgroundColor: Colors.danger,
-              borderBottomRightRadius: windowHeight * 0.02,
-            },
-          ]}
-        >
-          <Image
-            source={require('./../../assets/icons/delete_icon.png')}
-            resizeMode="cover"
-            style={styles.postButtonIcon}
-          />
-        </TouchableOpacity>
-      </View>
       </View>                                
     </View>
   )
@@ -67,18 +44,18 @@ const PaymentViewItem = ({ item }) => {
 const styles = StyleSheet.create({
   feedItemContainer: {
     width: windowWidth -30,
-    marginHorizontal:4,
-    marginVertical:2,
-    marginBottom:windowHeight*0.04,
+    marginHorizontal:windowHeight*0.005,
+    marginVertical:windowHeight*0.01,
+    marginBottom:windowHeight*0.01,
   },
   feedItem: {
-    width: '100%',
-    height: windowHeight*0.11,
-    borderTopRightRadius: windowHeight*0.02,
-    borderTopLeftRadius: windowHeight*0.02,
+    width: '95%',
+    marginLeft:windowHeight*0.01 ,
+    height: windowHeight*0.15,
+    borderRadius: windowHeight*0.02,
     backgroundColor:Colors.white,
-    borderColor:Colors.black,
-    borderWidth:'1%'
+    borderLeftColor:Colors.black,
+    borderWidth:1
   },
   titleText:{
     fontSize: 16,
@@ -107,14 +84,11 @@ const styles = StyleSheet.create({
     paddingTop:10
   },
   feedItemFooter:{
-    flexDirection:'row'
+    flexDirection:'row',
+    justifyContent:'space-evenly'
   },
   footerItem:{
-    bottom: 0,
-    height: windowHeight*0.04,
-    width: '50%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: Colors.white
   },
   postButtonIcon: {
     width:32,

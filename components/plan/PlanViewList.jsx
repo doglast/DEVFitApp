@@ -44,9 +44,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 2,
     borderRadius: windowHeight * 0.02,
-    backgroundColor: Colors.yellowBg,
+    backgroundColor: Colors.white,
     borderColor: Colors.black,
-    borderWidth: '1%'
+    borderWidth: 1
   },
   feedContentContainer: {
     paddingBottom: 5,
@@ -55,12 +55,12 @@ const styles = StyleSheet.create({
     flexDirection:'row',
   },
   postButtonIcon: {
-    width:45,
-    height: 45
+    width:50,
+    height: 50
   },
   titleText: {
     fontSize: 16,
-    color: Colors.white,
+    color: Colors.gold,
     paddingTop: 12,
     marginHorizontal:10,
     fontFamily: 'outfit-bold',

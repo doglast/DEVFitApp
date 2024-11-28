@@ -40,17 +40,19 @@ export default PlanViewItem;
 
 const styles = StyleSheet.create({
   feedItemContainer: {
-    width: windowWidth - 30,
-    marginHorizontal: 4,
-    marginVertical: 2,
+    width: windowWidth -30,
+    marginHorizontal:windowHeight*0.005,
+    marginVertical:windowHeight*0.01,
+    marginBottom:windowHeight*0.01,
   },
   feedItem: {
-    width: '100%',
-    height: windowHeight * 0.14,
-    borderRadius: windowHeight * 0.02,
-    backgroundColor: Colors.white,
-    borderColor: Colors.black,
-    borderWidth: '1%',
+    width: '95%',
+    marginLeft:windowHeight*0.01 ,
+    height: windowHeight*0.15,
+    borderRadius: windowHeight*0.02,
+    backgroundColor:Colors.white,
+    borderLeftColor:Colors.black,
+    borderWidth:1
   },
   textContainer: {
     paddingLeft: 20,
