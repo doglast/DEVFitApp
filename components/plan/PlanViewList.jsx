@@ -7,29 +7,41 @@ import { windowHeight } from '../../utils/Dimensions';
 const PlanViewList = ({ data }) => {
   if (data && data.length) {
     return (
-      <View >
-        <View style={styles.listContainer}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.titleText} >Planos</Text>
-            <Image
-              source={require('./../../assets/icons/plans_icon.png')}
-              resizeMode="cover"
-              style={styles.postButtonIcon}
-              />
-          </View>
-          <FlatList
-            data={data}
-            keyExtractor={item => `${item.id}`}
-            renderItem={({ item }) => {
-              return <PlanViewItem item={item} />;
-            }}
-            contentContainerStyle={styles.feedContentContainer}
+      <View style={styles.listContainer}>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.titleText} >Planos</Text>
+          <Image
+            source={require('./../../assets/icons/plans_icon.png')}
+            resizeMode="cover"
+            style={styles.postButtonIcon}
             />
         </View>
+        <FlatList
+          data={data}
+          keyExtractor={item => `${item.id}`}
+          renderItem={({ item }) => {
+            return <PlanViewItem item={item} />;
+          }}
+          contentContainerStyle={styles.feedContentContainer}
+          />
       </View>
     );
   }
-  return null; // Return null if there's no data to render
+  return (
+    <View style={styles.listContainer}>
+      <View style={styles.sectionHeader}>
+        <Text style={styles.titleText} >Planos</Text>
+        <Image
+          source={require('./../../assets/icons/plans_icon.png')}
+          resizeMode="cover"
+          style={styles.postButtonIcon}
+          />
+      </View>
+      <Text style={styles.emptyText}>
+        Nenhum Plano registrado para esse aluno.
+      </Text>
+    </View>
+  );
 };
 
 export default PlanViewList;
@@ -64,5 +76,12 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     marginHorizontal:10,
     fontFamily: 'outfit-bold',
+  },
+  emptyText:{
+    fontSize: 14,
+    color: Colors.black,
+    fontFamily: 'outfit-bold',
+    marginLeft:10,
+    marginVertical:15
   }
 });

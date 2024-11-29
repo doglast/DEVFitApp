@@ -8,10 +8,10 @@ import { Link } from "expo-router";
 const PaymentViewList = ({ data }) => {
   if (data && data.length) {
     return (
-      <View >
+      <View>
         <View style={styles.listContainer}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.titleText} >Pagamentos</Text>
+            <Text style={styles.titleText}>Pagamentos</Text>
             <Image
               source={require('./../../assets/icons/cash_icon.png')}
               resizeMode="cover"
@@ -19,8 +19,8 @@ const PaymentViewList = ({ data }) => {
             />
             <Link style={styles.newItemIcon} href={'/payment/create'}>
               <Image
-              source={require('./../../assets/icons/add_icon.png')}
-              resizeMode="cover"
+                source={require('./../../assets/icons/add_icon.png')}
+                resizeMode="cover"
               />
             </Link>
           </View>
@@ -31,12 +31,37 @@ const PaymentViewList = ({ data }) => {
               return <PaymentViewItem item={item} />;
             }}
             contentContainerStyle={styles.feedContentContainer}
-            />
+          />
         </View>
       </View>
     );
   }
-  return null; // Return null if there's no data to render
+  
+  // Display a message if there's no data
+  return (
+    <View style={styles.listContainer}>
+      <View style={styles.sectionHeader}>
+        <Text style={styles.titleText}>Pagamentos</Text>
+        <Image
+          source={require('./../../assets/icons/cash_icon.png')}
+          resizeMode="cover"
+          style={styles.headerIcon}
+        />
+        <Link style={styles.newItemIcon} href={'/payment/create'}>
+          <Image
+            source={require('./../../assets/icons/add_icon.png')}
+            resizeMode="cover"
+          />
+        </Link>
+      </View>
+      <Text style={[styles.emptyText,{marginTop:12}]}>
+        Nenhum Pagamento registrado para esse aluno.
+      </Text>
+      <Text style={[styles.emptyText,{marginBottom:12}]}> 
+        Clique no ícone de + para criar um novo pagamento.
+      </Text>
+    </View>
+  );
 };
 
 export default PaymentViewList;
@@ -78,4 +103,10 @@ const styles = StyleSheet.create({
     marginLeft: '45%',
     marginTop:'1.6%'
   },
+  emptyText:{
+    fontSize: 14,
+    color: Colors.black,
+    fontFamily: 'outfit-bold',
+    marginLeft:10,
+  }
 });
