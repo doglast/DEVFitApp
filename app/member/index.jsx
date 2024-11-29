@@ -135,7 +135,6 @@ const MemberScreen = ({ route }) => {
             source={require('../../assets/icons/left_arrow_icon.png')}
           />
         </TouchableOpacity>
-        <Text style={styles.headerText}>{memberData.name || 'N/A'}</Text>
       </View>
 
       <MemberViewItem item={memberData} />
