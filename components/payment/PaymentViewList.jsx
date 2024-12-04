@@ -1,11 +1,18 @@
 import React from "react";
-import { View, FlatList, StyleSheet, Text, Image } from "react-native";
+import { View, FlatList, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import PaymentViewItem from "./PaymentViewItem";
 import Colors from './../../constants/Colors';
-import { windowHeight } from './../../utils/Dimensions';
-import { Link } from "expo-router";
+import { windowHeight, windowWidth } from './../../utils/Dimensions';
+import { useNavigation } from "@react-navigation/native";
 
-const PaymentViewList = ({ data }) => {
+const PaymentViewList = ({ data, member }) => {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    console.log(member);
+    navigation.navigate("PaymentCreate", { memberId: member.id });
+  };
+
   if (data && data.length) {
     return (
       <View>
@@ -17,12 +24,13 @@ const PaymentViewList = ({ data }) => {
               resizeMode="cover"
               style={styles.headerIcon}
             />
-            <Link style={styles.newItemIcon} href={'/payment/create'}>
+            <TouchableOpacity  onPress={handlePress}>
               <Image
                 source={require('./../../assets/icons/add_icon.png')}
                 resizeMode="cover"
+                style={styles.newItemIcon}
               />
-            </Link>
+            </TouchableOpacity>
           </View>
           <FlatList
             data={data}
@@ -47,12 +55,13 @@ const PaymentViewList = ({ data }) => {
           resizeMode="cover"
           style={styles.headerIcon}
         />
-        <Link style={styles.newItemIcon} href={'/payment/create'}>
+        <TouchableOpacity  onPress={handlePress}>
           <Image
             source={require('./../../assets/icons/add_icon.png')}
             resizeMode="cover"
+            style={styles.newItemIcon}
           />
-        </Link>
+        </TouchableOpacity>
       </View>
       <Text style={[styles.emptyText,{marginTop:12}]}>
         Nenhum Pagamento registrado para esse aluno.
@@ -100,8 +109,8 @@ const styles = StyleSheet.create({
   newItemIcon: {
     width:35,
     height: 35,
-    marginLeft: '45%',
-    marginTop:'1.6%'
+    marginLeft: windowWidth * 0.42,
+    marginTop:windowHeight * 0.01
   },
   emptyText:{
     fontSize: 14,

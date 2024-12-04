@@ -4,13 +4,17 @@ import {
   Image, 
   TextInput, 
   StyleSheet, 
-  TouchableOpacity, 
+  TouchableOpacity,
   FlatList, Modal, TouchableWithoutFeedback, Platform } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import Colors from '../../constants/Colors';
-import { Link } from "expo-router";
 import { windowHeight, windowWidth } from '../../utils/Dimensions';
-const PaymentEditScreen = () => {
+import { useNavigation } from "@react-navigation/native";
+
+const PaymentEditScreen =  ({ route }) => {
+  
+  const { memberId } = route.params;
+  const navigation = useNavigation();
   const [statusExpanded, setStatusExpanded] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('Selecione o status do pagamento');
 
@@ -32,17 +36,47 @@ const PaymentEditScreen = () => {
     setMethodExpanded(false);
   };
 
+  const handleSavePress = async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      if (!token) {
+        console.error('Nenhum token foi encontrado');
+        return;
+      }
+
+      const response = await fetch(`https://www.rodrigozambon.com.br/devfitness/api/plans/${memberId}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentDetails), // Include the payment details in the request body
+      });
+
+      if (response.ok) {
+        console.log('Plano salvo com sucesso');
+        navigation.navigate('MemberScreen', { memberId: memberId });
+      } else {
+        console.error('Falha ao salvar o plano:', response.status);
+      }
+    } catch (error) {
+      console.error('Erro ao salvar o plano:', error);
+    }
+  };
+
   const [top, setTop] = useState(0);
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity>
-          <Link style={styles.icon} href={'/member'}>
+        <TouchableOpacity 
+          
+          onPress={() => navigation.navigate('Member', { memberId: memberId })}
+        >
             <Image
+              style={styles.icon} 
               source={require('../../assets/icons/left_arrow_icon.png')}
             />
-          </Link>
         </TouchableOpacity>
         <Text style={styles.headerText}>Pagamento</Text>
       </View>
@@ -75,7 +109,7 @@ const PaymentEditScreen = () => {
             activeOpacity={0.8}
             onPress={toggleStatusExpanded}
           >
-            <Text style={styles.textSign}>{selectedStatus}</Text>
+            <Text style={styles.textSelect}>{selectedStatus}</Text>
           </TouchableOpacity>
           {
             statusExpanded ? (
@@ -113,7 +147,7 @@ const PaymentEditScreen = () => {
             activeOpacity={0.8}
             onPress={toggleMethodExpanded}
           >
-            <Text style={styles.textSign}>{selectedMethod}</Text>
+            <Text style={styles.textSelect}>{selectedMethod}</Text>
           </TouchableOpacity>
           {
             methodExpanded ? (
@@ -140,11 +174,9 @@ const PaymentEditScreen = () => {
           }
         </View>
 
-        <Link style={styles.pressable} href={'/member'}>
-          <TouchableOpacity>
-            <Text style={styles.textSign}>Salvar</Text>
-          </TouchableOpacity>
-        </Link>
+        <TouchableOpacity style={styles.pressable} onPress={handleSavePress}>
+          <Text style={styles.textSign}>Salvar</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -200,11 +232,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center'
   },
+  textSelect: {
+    fontSize: 16,
+    fontFamily: 'outfit-medium',
+    color: Colors.black
+  },
   textSign: {
     fontSize: 16,
     fontFamily: 'outfit-medium',
-    color: Colors.white,
-    marginLeft: '58%'
+    color: Colors.white
   },
   select:{
     height: windowHeight*0.055,

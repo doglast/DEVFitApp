@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  ScrollView, 
-  Text, View,
+  ScrollView, View,
   StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
   import { useNavigation } from '@react-navigation/native';
   import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,37 +18,41 @@ const MemberScreen = ({ route }) => {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchPaymentData = async () => {
+        try {
+          const token = await AsyncStorage.getItem('userToken');
+          if (!token) {
+            console.error('Nenhum token foi encontrado');
+            return;
+          }
+  
+          const paymentResponse = 
+            await fetch(`https://www.rodrigozambon.com.br/devfitness/api/payments/${memberId}`, {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+              },
+          });
+  
+          if (paymentResponse.ok) {
+            const paymentData = await paymentResponse.json();
+            setPaymentData(paymentData);
+          } else {
+            console.error('Falha ao recuperar os dados de pagamento:', paymentResponse.status);
+          }
+        } catch (error) {
+          console.error('Erro ao consultar os dados:', error);
+        }
+      };
+  
+      fetchPaymentData();
+    }, [memberId])
+  );
+
   useEffect(() => {
-
-    const fetchMemberData = async () => {
-      try {
-        const token = await AsyncStorage.getItem('userToken');
-        if (!token) {
-          console.error('Nenhum token foi encontrado');
-          return;
-        }
-
-        const memberResponse = 
-          await fetch(`https://www.rodrigozambon.com.br/devfitness/api/members/${memberId}`, {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-            },
-        });
-
-        if (memberResponse.ok) {
-          const memberData = await memberResponse.json();
-          setMemberData(memberData.member);
-        } else {
-          console.error('Falha ao recuperar os dados do membro:', memberResponse.status);
-        }
-      } catch (error) {
-        console.error('Erro ao consultar os dados:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
     const fetchPaymentData = async () => {
       try {
@@ -138,7 +141,7 @@ const MemberScreen = ({ route }) => {
       </View>
 
       <MemberViewItem item={memberData} />
-      <PaymentViewList data={paymentData} /> 
+      <PaymentViewList data={paymentData} member={memberData}/> 
       <PlanViewList data={planData} />
     </ScrollView>
   );
