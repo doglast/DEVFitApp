@@ -12,6 +12,12 @@ const PlanViewItem =({item})=>{
 
   const planColor = planTypeColors[item.plan_type] || Colors.gray;
 
+  function formatDate(dateString) {
+    if (!dateString) return 'N/A';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  }
+
   return (
     <View style={styles.feedItemContainer}>
       <View style={styles.feedItem}>
@@ -20,10 +26,10 @@ const PlanViewItem =({item})=>{
             {item.plan_type}
           </Text>
           <Text style={styles.titleText}>
-            Inicio: {item.start_date}
+            Inicio: {formatDate(item.start_date)}
           </Text>
           <Text style={styles.titleText}>
-            Fim: {item.end_date}
+            Fim: {formatDate(item.end_date)}
           </Text>
           <Text
             style={item.status === "active" ? styles.ativoText : styles.inativoText}
