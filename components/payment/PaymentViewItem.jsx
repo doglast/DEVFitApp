@@ -8,8 +8,20 @@ import Colors from './../../constants/Colors';
 const PaymentViewItem = ({ item }) => {
   const navigation = useNavigation();
 
+  const paymentMethods = [
+    { id: 'boleto', payment_method: 'Boleto' },
+    { id: 'credit_card', payment_method: 'Crédito' },
+    { id: 'pix', payment_method: 'Pix' },
+    { id: 'debit', payment_method: 'Débito' },
+  ];
+
+  const getPaymentMethodName = (id) => {
+    const method = paymentMethods.find((item) => item.id === id);
+    return method ? method.payment_method : 'Unknown';
+  };
+
   const handleEditPress = () => {
-    navigation.navigate('PaymentEdit', { paymentId: item.id });
+    navigation.navigate('PaymentEdit', { paymentId:item.id, memberId: item.member_id });
   };
 
   const handleDeletePress = () => {
@@ -31,7 +43,7 @@ const PaymentViewItem = ({ item }) => {
                 return;
               }
 
-              const response = await fetch(`https://www.rodrigozambon.com.br/devfitness/api/plans/${item.id}`, {
+              const response = await fetch(`https://www.rodrigozambon.com.br/devfitness/api/payments/${item.id}`, {
                 method: 'DELETE',
                 headers: {
                   'Authorization': `Bearer ${token}`,
@@ -55,15 +67,21 @@ const PaymentViewItem = ({ item }) => {
     );
   };
 
+  function formatDate(dateString) {
+    if (!dateString) return 'N/A';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  }
+
   return (
     <View style={styles.feedItemContainer}>
       <View style={styles.feedItem}>
         <View style={styles.textContainer}>
           <Text style={styles.titleText}>
-            Pagamento referente à: {item.date}
+            Pagamento referente à: {formatDate(item.date)}
           </Text>
           <Text style={styles.titleText}>
-            Método de pagamento: {item.payment_method}
+            Método de pagamento: {getPaymentMethodName(item.payment_method)}
           </Text>
           <Text style={item.status === "1" ? styles.pagoText : styles.pendenteText}>
             {item.status === "1" ? ' Pago' : ' Pendente'}

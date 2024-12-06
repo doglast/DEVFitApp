@@ -6,27 +6,46 @@ import {
   StyleSheet, 
   TouchableOpacity,
   FlatList, Modal, TouchableWithoutFeedback, Platform } from 'react-native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import Colors from '../../constants/Colors';
 import { windowHeight, windowWidth } from '../../utils/Dimensions';
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PaymentEditScreen =  ({ route }) => {
   
-  const { memberId } = route.params;
+  const { memberId, paymentId } = route.params;
   const navigation = useNavigation();
   const [statusExpanded, setStatusExpanded] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('Selecione o status do pagamento');
 
   const [methodExpanded, setMethodExpanded] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState('Selecione o método de pagamento');
+  const [dateInput, setDateInput] = useState('AAAA-MM-DD');
+  const [paymentDetails, setPaymentDetails] = useState(null);
 
+  const paymentMethods = [
+    { id: 'boleto', payment_method: 'Boleto' },
+    { id: 'credit_card', payment_method: 'Crédito' },
+    { id: 'pix', payment_method: 'Pix' },
+    { id: 'debit', payment_method: 'Débito' },
+  ];
+
+  const getPaymentMethodName = (id) => {
+    const method = paymentMethods.find((item) => item.id === id);
+    return method ? method.payment_method : 'Unknown';
+  };
 
   const toggleStatusExpanded = useCallback(() => setStatusExpanded(!statusExpanded), [statusExpanded]);
 
   const handleStatusSelect = (status) => {
     setSelectedStatus(status);
     setStatusExpanded(false);
+
+    setPaymentDetails((prevDetails) => ({
+      ...prevDetails,
+      status: status,
+    }));
   };
 
   const toggleMethodExpanded = useCallback(() => setMethodExpanded(!methodExpanded), [methodExpanded]);
@@ -34,9 +53,14 @@ const PaymentEditScreen =  ({ route }) => {
   const handleMethodSelect = (method) => {
     setSelectedMethod(method);
     setMethodExpanded(false);
+
+    setPaymentDetails((prevDetails) => ({
+      ...prevDetails,
+      payment_method: method,
+    }));
   };
 
-  const handleSavePress = async () => {
+  const fetchPaymentDetails = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
       if (!token) {
@@ -44,8 +68,43 @@ const PaymentEditScreen =  ({ route }) => {
         return;
       }
 
-      const response = await fetch(`https://www.rodrigozambon.com.br/devfitness/api/plans/${memberId}`, {
-        method: 'POST',
+      const response = await fetch(`https://www.rodrigozambon.com.br/devfitness/api/payments/show/${paymentId}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setPaymentDetails(data);
+        setSelectedStatus(data.status);
+        setSelectedMethod(data.payment_method);
+        setDateInput(data.date);
+      } else {
+        console.error('Falha ao carregar os detalhes do pagamento:', response.status);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar os detalhes do pagamento:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPaymentDetails();
+  }, []);
+
+  const   handleSavePress = async () => {
+    try {
+      console.log('cuen',paymentDetails);
+      const token = await AsyncStorage.getItem('userToken');
+      if (!token) {
+        console.error('Nenhum token foi encontrado');
+        return;
+      }
+
+      const response = await fetch(`https://www.rodrigozambon.com.br/devfitness/api/payments/${paymentId}`, {
+        method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -55,7 +114,7 @@ const PaymentEditScreen =  ({ route }) => {
 
       if (response.ok) {
         console.log('Plano salvo com sucesso');
-        navigation.navigate('MemberScreen', { memberId: memberId });
+        navigation.navigate('Member', { memberId: memberId });
       } else {
         console.error('Falha ao salvar o plano:', response.status);
       }
@@ -70,7 +129,6 @@ const PaymentEditScreen =  ({ route }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity 
-          
           onPress={() => navigation.navigate('Member', { memberId: memberId })}
         >
             <Image
@@ -87,8 +145,15 @@ const PaymentEditScreen =  ({ route }) => {
             style={styles.textInput}
             autoCapitalize='none'
             keyboardType='default'
-            placeholder='DD/MM/YYYY'
             placeholderTextColor={Colors.black}
+            value={dateInput}
+            onChangeText={(text) => {
+              setDateInput(text);
+              setPaymentDetails((prevDetails) => ({
+                ...prevDetails,
+                date: text,
+              }));
+            }}
           />
         </View>
 
@@ -109,7 +174,7 @@ const PaymentEditScreen =  ({ route }) => {
             activeOpacity={0.8}
             onPress={toggleStatusExpanded}
           >
-            <Text style={styles.textSelect}>{selectedStatus}</Text>
+            <Text style={styles.textSelect}>{selectedStatus === '1' ? 'Pago' : 'Pendente'}</Text>
           </TouchableOpacity>
           {
             statusExpanded ? (
@@ -121,12 +186,12 @@ const PaymentEditScreen =  ({ route }) => {
                         keyExtractor={(item) => item.id}
                         data={[
                           { id: '1', status: 'Pago' },
-                          { id: '2', status: 'Não Pago' }
+                          { id: '2', status: 'Pendete' }
                         ]}
                         renderItem={({ item }) => (
                           <TouchableOpacity
                             style={styles.optionItem}
-                            onPress={() => handleStatusSelect(item.status)}
+                            onPress={() => handleStatusSelect(item.id)}
                           >
                             <Text>{item.status}</Text>
                           </TouchableOpacity>
@@ -147,23 +212,18 @@ const PaymentEditScreen =  ({ route }) => {
             activeOpacity={0.8}
             onPress={toggleMethodExpanded}
           >
-            <Text style={styles.textSelect}>{selectedMethod}</Text>
+            <Text style={styles.textSelect}>{getPaymentMethodName(selectedMethod)}</Text>
           </TouchableOpacity>
           {
             methodExpanded ? (
               <View style={styles.options}>
                 <FlatList
                   keyExtractor={(item) => item.id}
-                  data={[
-                    { id: 1, payment_method: 'Boleto' },
-                    { id: 2, payment_method:'Cartão'},
-                    { id: 3, payment_method:'Pix'},
-                    { id:4, payment_method:'Débito'},
-                  ]}
+                  data={paymentMethods}
                   renderItem={({ item }) => (
                     <TouchableOpacity
                       style={styles.optionItem}
-                      onPress={() => handleMethodSelect(item.payment_method)}
+                      onPress={() => handleMethodSelect(item.id)}
                     >
                       <Text>{item.payment_method}</Text>
                     </TouchableOpacity>
@@ -174,7 +234,8 @@ const PaymentEditScreen =  ({ route }) => {
           }
         </View>
 
-        <TouchableOpacity style={styles.pressable} onPress={handleSavePress}>
+        <TouchableOpacity style={styles.pressable} onPress={handleSavePress}
+        >
           <Text style={styles.textSign}>Salvar</Text>
         </TouchableOpacity>
       </View>

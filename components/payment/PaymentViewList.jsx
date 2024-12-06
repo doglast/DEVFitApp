@@ -9,7 +9,6 @@ const PaymentViewList = ({ data, member }) => {
   const navigation = useNavigation();
 
   const handlePress = () => {
-    console.log(member);
     navigation.navigate("PaymentCreate", { memberId: member.id });
   };
 
