@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { windowHeight, windowWidth } from './../../utils/Dimensions';
 import Colors from './../../constants/Colors';
 
-const PaymentViewItem = ({ item }) => {
+const PaymentViewItem = ({ item, onDeleteSuccess }) => {
   const navigation = useNavigation();
 
   const paymentMethods = [
@@ -21,7 +21,7 @@ const PaymentViewItem = ({ item }) => {
   };
 
   const handleEditPress = () => {
-    navigation.navigate('PaymentEdit', { paymentId:item.id, memberId: item.member_id });
+    navigation.navigate('PaymentEdit', { paymentId: item.id, memberId: item.member_id });
   };
 
   const handleDeletePress = () => {
@@ -53,12 +53,15 @@ const PaymentViewItem = ({ item }) => {
 
               if (response.ok) {
                 console.log('Plano deletado com sucesso');
-                // Optionally, refresh the list or update the state
+                // Chama a função de recarga da tela anterior
+                if (onDeleteSuccess) {
+                  onDeleteSuccess();
+                }
               } else {
                 console.error('Falha ao deletar o plano:', response.status);
               }
             } catch (error) {
-              console.error('Erro a deletar o plano:', error);
+              console.error('Erro ao deletar o plano:', error);
             }
           },
         },

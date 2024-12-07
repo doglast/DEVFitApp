@@ -58,17 +58,25 @@ const PaymentCreateScreen =  ({ route }) => {
       ...prevDetails,
       payment_method: method,
     }));
+
+    setPaymentDetails((prevDetails) => ({
+      ...prevDetails,
+      member_id: memberId,
+    }));
   };
 
   const   handleSavePress = async () => {
-    try {
+    try {   
+
+      console.log(JSON.stringify(paymentDetails));
+
       const token = await AsyncStorage.getItem('userToken');
       if (!token) {
         console.error('Nenhum token foi encontrado');
         return;
       }
 
-      const response = await fetch(`https://www.rodrigozambon.com.br/devfitness/api/payments/${paymentId}`, {
+      const response = await fetch(`https://www.rodrigozambon.com.br/devfitness/api/payments`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -104,7 +112,7 @@ const PaymentCreateScreen =  ({ route }) => {
         <Text style={styles.headerText}>Pagamento</Text>
       </View>
       <View style={styles.page}>
-        <Text style={[styles.textLabel, { marginTop: 40 }]}>Data pagamento</Text>
+        <Text style={[styles.textLabel, { marginTop: 40 }]}>Data </Text>
         <View style={styles.action}>
           <TextInput
             style={styles.textInput}
